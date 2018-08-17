@@ -10,7 +10,10 @@ Everything you need to know about ROS -> http://www.ros.org/
 ## Getting Started
 
 The plugin is a basic ROS subscriber reading data from a topic with the type Float64.
+
 Of course you can adapat it to subscribe to any topic.
+
+It basically consists of a C++ code starting a ROS init() thread, then the plugin itself is listening to the topic. 
 
 The code work for the 6.x version of Cedar.
 
@@ -45,10 +48,25 @@ Finally start the compilation :
 
 `make`
 
+You should see the plugin under the name libEarListener.so in the build/ repository
 
 ## Run the plugin
 
-Explain how to run the automated tests for this system
+Execute cedar and load it into cedar 
+
+*Tools -> Manage plugins*
+
+In the plugin Manager window, click on *add* and choose the plugin libEarListener.so. This one should appear in the window.
+
+You can close the window. The plugin is loaded inside cedar and before loading it, make sure your ROS node is running.
+
+Run the ROS init() thread 
+
+*Scripting -> C++ Scripts...*
+
+In the window, you should see the name of the thread inside the plugin (Talker here).
+
+
 
 ### Break down into end to end tests
 
