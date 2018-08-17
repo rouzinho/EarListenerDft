@@ -1,6 +1,6 @@
 #include "plugin.h"
 #include "EarSubscriber.h"
-#include "Talker.h"
+#include "InitRos.h"
 #include <cedar/processing/ElementDeclaration.h>
 #include <cedar/processing/CppScriptDeclaration.h>
 
@@ -13,7 +13,7 @@ void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
     plugin->add(summation_decl);
     cedar::proc::CppScriptDeclarationPtr ownscript
     (
-        new cedar::proc::CppScriptDeclarationTemplate  <Talker>("category")
+        new cedar::proc::CppScriptDeclarationTemplate  <InitRos>("category")
     );
     plugin->add(ownscript);
 }
