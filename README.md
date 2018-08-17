@@ -26,6 +26,17 @@ You can't use a precompiled version of Cedar to compile and run the plugin.
 
 I suggest reading about how to create a plugin in Cedar first, it will greatly help to understand how it works : https://cedar.ini.rub.de/tutorials/writing_custom_code_for_cedar/
 
+Install ROS : http://wiki.ros.org/ROS/Installation
+
+The code was tested on ROS Kinetic Kame
+
+**Warning**
+
+ROS comes with Qt5 and Cedar officially support only Qt4, so I suggest a basic installation of ROS.
+For my case, I have Cedar and a basic ROS on a computer and a complete ROS desktop on another computer dedicated to my robot. I communicate between them through the network with the topics.
+
+Anyway, ROS and Cedar are a bit to powerful to run on the same computer (if you have a big DFT model and a complex robot), so I recommend using 2 different computer.
+
 ### Installing
 
 First clone the repository :
@@ -64,49 +75,30 @@ Run the ROS init() thread
 
 *Scripting -> C++ Scripts...*
 
-In the window, you should see the name of the thread inside the plugin (Talker here).
+In the window, you should see the name of the thread inside the plugin (InitRos here). Click on the add button.
+Then click on play to start the Ros initialisation. This will create a thread that will init ROS in order to subscribe to any topics you want.
 
 
+You can now go back to the cedar main interface and click on the Utilities tab.
 
-### Break down into end to end tests
+Drag the EarSubscriber widget into the architecture panel. When your architecture is ready, you can start the simulation.
+You will see that the EarSubscriber transform the input of a topic into a 1D Gaussian function.
+For this case, I read data from a noise sensor and use the value as amplitude of the gaussian function.
 
-Explain what these tests test and why
 
-```
-Give an example
-```
+## Work in progress
 
-### And coding style tests
+This plugin is right now more a proof of concept than a stable module. As you have seen, you have to specify everything inside the code (topic subscription, type read...)
 
-Explain what these tests test and why
+In the future, the plugin will use the Qt widget interface to select the nodes, topics and types in order to avoid changing the code everytime you want to subscribe to a topic.
 
-```
-Give an example
-```
+The plugin will be more like an artefact binding sensors to DFT.
 
-## Deployment
 
-Add additional notes about how to deploy this on a live system
-
-## Built With
-
-* [Dropwizard](http://www.dropwizard.io/1.0.2/docs/) - The web framework used
-* [Maven](https://maven.apache.org/) - Dependency Management
-* [ROME](https://rometools.github.io/rome/) - Used to generate RSS Feeds
-
-## Contributing
-
-Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details on our code of conduct, and the process for submitting pull requests to us.
-
-## Versioning
-
-We use [SemVer](http://semver.org/) for versioning. For the versions available, see the [tags on this repository](https://github.com/your/project/tags). 
 
 ## Authors
 
-* **Billie Thompson** - *Initial work* - [PurpleBooth](https://github.com/PurpleBooth)
-
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+Quentin Houbre - Tampere University of Technology
 
 ## License
 
