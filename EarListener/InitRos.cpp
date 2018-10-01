@@ -14,8 +14,8 @@ InitRos::InitRos(){}
 
 void InitRos::run()
 {
-    int argc;
-    char **argv;
+    int argc = 0;
+    char **argv = NULL;
     ros::init(argc, argv, "listener");
 }
 void requestStop()
