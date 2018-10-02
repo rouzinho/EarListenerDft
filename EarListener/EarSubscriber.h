@@ -42,6 +42,7 @@
 
 // FORWARD DECLARATIONS
 #include <cedar/auxiliaries/MatData.fwd.h>
+#include <cedar/auxiliaries/UIntParameter.h>
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
 
@@ -53,6 +54,7 @@
  */
 class EarSubscriber : public cedar::proc::Step
 {
+  Q_OBJECT
   //--------------------------------------------------------------------------------------------------------------------
   // constructors and destructor
   //--------------------------------------------------------------------------------------------------------------------
@@ -65,9 +67,9 @@ public:
   //--------------------------------------------------------------------------------------------------------------------
   // public methods
   //--------------------------------------------------------------------------------------------------------------------
-public:
+public slots:
   // none yet
-
+  void updateOut();
   //--------------------------------------------------------------------------------------------------------------------
   // protected methods
   //--------------------------------------------------------------------------------------------------------------------
@@ -94,6 +96,7 @@ private:
   std::vector<unsigned int> mGaussMatrixSizes;
   std::vector<double> mGaussMatrixSigmas;
   std::vector<double> mGaussMatrixCenters;
+  cedar::aux::UIntParameterPtr mEar;
   ros::NodeHandle n;
   ros::Subscriber sub;
   int i;

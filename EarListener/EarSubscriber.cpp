@@ -47,7 +47,8 @@
 //----------------------------------------------------------------------------------------------------------------------
 EarSubscriber::EarSubscriber()
 :
-cedar::proc::Step(true), mOutput(new cedar::aux::MatData(cv::Mat::zeros(50, 50, CV_32F)))
+cedar::proc::Step(true), mOutput(new cedar::aux::MatData(cv::Mat::zeros(50, 50, CV_32F))),
+mEar(new cedar::aux::UIntParameter(this, "0 For left, 1 for right", 1, cedar::aux::UIntParameter::LimitType::positive(2)))
 {
 this->declareOutput("demo_output", mOutput);
 
@@ -58,6 +59,8 @@ mGaussMatrixSigmas.push_back(3.0);
 mGaussMatrixCenters.push_back(25.0);
 //init the variable that will get the sensor value
 dat = 0;
+
+this->connect(this->mEar.get(), SIGNAL(valueChanged()), this, SLOT(updateOut()));
 
 
 }
@@ -77,6 +80,11 @@ void EarSubscriber::compute(const cedar::proc::Arguments&)
   this->mOutput->setData(cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,dat,mGaussMatrixSigmas,mGaussMatrixCenters,true));
 
 
+}
+
+void EarSubscriber::updateOut()
+{
+  int lower = static_cast<int>(this->mEar->getValue());
 }
 
 //callback for the subscriber. This one get the value of the sensor.
