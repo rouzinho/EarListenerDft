@@ -11,9 +11,4 @@ void pluginDeclaration(cedar::aux::PluginDeclarationListPtr plugin)
         new cedar::proc::ElementDeclarationTemplate <EarSubscriber>("Utilities")
     );
     plugin->add(summation_decl);
-    cedar::proc::CppScriptDeclarationPtr ownscript
-    (
-        new cedar::proc::CppScriptDeclarationTemplate  <InitRos>("category")
-    );
-    plugin->add(ownscript);
 }
