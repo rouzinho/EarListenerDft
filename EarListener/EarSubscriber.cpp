@@ -84,14 +84,14 @@ void EarSubscriber::compute(const cedar::proc::Arguments&)
 
 void EarSubscriber::updateOut()
 {
-  int lower = static_cast<int>(this->mEar->getValue());
+   choice = static_cast<int>(this->mEar->getValue());
 }
 
 //callback for the subscriber. This one get the value of the sensor.
 void EarSubscriber::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
 {
-  ROS_INFO("I heard: [%f]", msg->data);
-  dat = msg->data;
+   ROS_INFO("I heard: [%f]", msg->data);
+   dat = msg->data;
 }
 
 void EarSubscriber::reset()
