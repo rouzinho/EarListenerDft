@@ -42,7 +42,8 @@
 
 // FORWARD DECLARATIONS
 #include <cedar/auxiliaries/MatData.fwd.h>
-#include <cedar/auxiliaries/UIntParameter.h>
+#include <cedar/auxiliaries/DoubleParameter.h>
+#include <cedar/auxiliaries/StringParameter.h>
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
 
@@ -69,7 +70,8 @@ public:
   //--------------------------------------------------------------------------------------------------------------------
 public slots:
   // none yet
-  void updateOut();
+  void reCompute();
+  void reName();
   //--------------------------------------------------------------------------------------------------------------------
   // protected methods
   //--------------------------------------------------------------------------------------------------------------------
@@ -96,12 +98,13 @@ private:
   std::vector<unsigned int> mGaussMatrixSizes;
   std::vector<double> mGaussMatrixSigmas;
   std::vector<double> mGaussMatrixCenters;
-  cedar::aux::UIntParameterPtr mEar;
+  cedar::aux::StringParameterPtr mTopic;
+  cedar::aux::DoubleParameterPtr mValidate;
+  std::string topicName;
   ros::NodeHandle n;
   ros::Subscriber sub;
   int i;
   double dat;
-  int choice;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters
