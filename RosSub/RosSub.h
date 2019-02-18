@@ -22,7 +22,7 @@
     Institute:   Ruhr-Universitaet Bochum
                  Institut fuer Neuroinformatik
 
-    File:        EarSubscriber.h
+    File:        RosSub.h
 
     Maintainer:  Tutorial Writer Person
     Email:       cedar@ini.rub.de
@@ -42,7 +42,8 @@
 
 // FORWARD DECLARATIONS
 #include <cedar/auxiliaries/MatData.fwd.h>
-#include <cedar/auxiliaries/UIntParameter.h>
+#include <cedar/auxiliaries/DoubleParameter.h>
+#include <cedar/auxiliaries/StringParameter.h>
 #include "ros/ros.h"
 #include "std_msgs/Float64.h"
 
@@ -52,7 +53,7 @@
  *
  * Seriously, I mean it!.
  */
-class EarSubscriber : public cedar::proc::Step
+class RosSub : public cedar::proc::Step
 {
   Q_OBJECT
   //--------------------------------------------------------------------------------------------------------------------
@@ -60,7 +61,7 @@ class EarSubscriber : public cedar::proc::Step
   //--------------------------------------------------------------------------------------------------------------------
 public:
   //!@brief The standard constructor.
-  EarSubscriber();
+  RosSub();
 
   //!@brief Destructor
 
@@ -69,7 +70,8 @@ public:
   //--------------------------------------------------------------------------------------------------------------------
 public slots:
   // none yet
-  void updateOut();
+  void reCompute();
+  void reName();
   //--------------------------------------------------------------------------------------------------------------------
   // protected methods
   //--------------------------------------------------------------------------------------------------------------------
@@ -96,12 +98,13 @@ private:
   std::vector<unsigned int> mGaussMatrixSizes;
   std::vector<double> mGaussMatrixSigmas;
   std::vector<double> mGaussMatrixCenters;
-  cedar::aux::UIntParameterPtr mEar;
+  cedar::aux::StringParameterPtr mTopic;
+  cedar::aux::DoubleParameterPtr mValidate;
+  std::string topicName;
   ros::NodeHandle n;
   ros::Subscriber sub;
   int i;
   double dat;
-  int choice;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters
@@ -112,6 +115,6 @@ protected:
 private:
   // none yet
 
-}; // class EarSubscriber
+}; // class RosSub
 
 #endif // CEDAR_TUTORIAL_SIMPLE_SUMMATION_H

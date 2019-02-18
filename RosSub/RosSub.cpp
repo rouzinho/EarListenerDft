@@ -22,7 +22,7 @@
     Institute:   Ruhr-Universitaet Bochum
                  Institut fuer Neuroinformatik
 
-    File:        EarSubscriber.h
+    File:        RosSub.h
 
     Maintainer:  Tutorial Writer Person
     Email:       cedar@ini.rub.de
@@ -35,7 +35,7 @@
 ======================================================================================================================*/
 
 // CEDAR INCLUDES
-#include "EarSubscriber.h"
+#include "RosSub.h"
 #include <cedar/processing/ExternalData.h> // getInputSlot() returns ExternalData
 #include <cedar/auxiliaries/MatData.h> // this is the class MatData, used internally in this step
 #include "cedar/auxiliaries/math/functions.h"
@@ -45,10 +45,12 @@
 //----------------------------------------------------------------------------------------------------------------------
 // constructors and destructor
 //----------------------------------------------------------------------------------------------------------------------
-EarSubscriber::EarSubscriber()
+RosSub::RosSub()
 :
-cedar::proc::Step(true), mOutput(new cedar::aux::MatData(cv::Mat::zeros(50, 50, CV_32F))),
-mEar(new cedar::aux::UIntParameter(this, "0 For left, 1 for right", 1, cedar::aux::UIntParameter::LimitType::positive(2)))
+cedar::proc::Step(true),
+mOutput(new cedar::aux::MatData(cv::Mat::zeros(50, 50, CV_32F))),
+mTopic(new cedar::aux::StringParameter(this, "Topic Name", "")),
+mValidate(new cedar::aux::DoubleParameter(this,"Motor Pos",25))
 {
 this->declareOutput("demo_output", mOutput);
 
@@ -60,18 +62,18 @@ mGaussMatrixCenters.push_back(25.0);
 //init the variable that will get the sensor value
 dat = 0;
 
-this->connect(this->mEar.get(), SIGNAL(valueChanged()), this, SLOT(updateOut()));
+this->connect(this->mValidate.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
+this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
 
 
 }
 //----------------------------------------------------------------------------------------------------------------------
 // methods
 //----------------------------------------------------------------------------------------------------------------------
-void EarSubscriber::compute(const cedar::proc::Arguments&)
+void RosSub::compute(const cedar::proc::Arguments&)
 {
 
   //subscriber for the ear. The rate of subscription is based on the one on Arduino e.g 10ms
-  sub = n.subscribe("/ear", 1000, &EarSubscriber::chatterCallback,this);
   ros::Rate loop_rate(98);
   loop_rate.sleep();
   ros::spinOnce();
@@ -82,19 +84,25 @@ void EarSubscriber::compute(const cedar::proc::Arguments&)
 
 }
 
-void EarSubscriber::updateOut()
+void RosSub::reCompute()
 {
-   choice = static_cast<int>(this->mEar->getValue());
+   const std::string tname = topicName;
+   sub = n.subscribe(tname, 1000, &RosSub::chatterCallback,this);
+}
+
+void RosSub::reName()
+{
+   topicName = this->mTopic->getValue();
 }
 
 //callback for the subscriber. This one get the value of the sensor.
-void EarSubscriber::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
+void RosSub::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
 {
-   ROS_INFO("I heard: [%f]", msg->data);
+   //ROS_INFO("I heard: [%f]", msg->data);
    dat = msg->data;
 }
 
-void EarSubscriber::reset()
+void RosSub::reset()
 {
 
 	//ros::shutdown();

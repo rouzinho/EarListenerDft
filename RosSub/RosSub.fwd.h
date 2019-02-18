@@ -22,13 +22,13 @@
     Institute:   Ruhr-Universitaet Bochum
                  Institut fuer Neuroinformatik
 
-    File:        EarSubscriber.fwd.h
+    File:        RosSub.fwd.h
 
     Maintainer:  quentin houbre
     Email:       quentin.houbre@tut.fi
     Date:        2018 06 13
 
-    Description: Forward declaration file for the class EarSubscriber.
+    Description: Forward declaration file for the class RosSub.
 
     Credits:
 
@@ -48,10 +48,10 @@
 #endif // Q_MOC_RUN
 
 
-namespace EarSubscriber
+namespace RosSub
 {
   //!@cond SKIPPED_DOCUMENTATION
-  class EarSubscriber;
+  class RosSub;
   //class Talker;
   //!@endcond
 }
