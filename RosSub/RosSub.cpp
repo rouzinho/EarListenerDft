@@ -98,7 +98,7 @@ void RosSub::reName()
 //callback for the subscriber. This one get the value of the sensor.
 void RosSub::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
 {
-   ROS_INFO("I heard: [%f]", msg->data);
+   //ROS_INFO("I heard: [%f]", msg->data);
    dat = msg->data;
 }
 
