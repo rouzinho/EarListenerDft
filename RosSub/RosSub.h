@@ -104,7 +104,8 @@ private:
   ros::NodeHandle n;
   ros::Subscriber sub;
   int i;
-  double dat;
+  double amp;
+  double cent;
 
   //--------------------------------------------------------------------------------------------------------------------
   // parameters

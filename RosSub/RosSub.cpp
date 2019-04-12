@@ -55,12 +55,12 @@ mValidate(new cedar::aux::DoubleParameter(this,"Motor Pos",25))
 this->declareOutput("demo_output", mOutput);
 
 mGaussMatrixSizes.push_back(50);
-
 mGaussMatrixSigmas.push_back(3.0);
+mGaussMatrixCenters.push_back(10.0);
 
-mGaussMatrixCenters.push_back(25.0);
+//mGaussMatrixCenters.push_back(25.0);
 //init the variable that will get the sensor value
-dat = 0;
+cent = 2.5;
 
 this->connect(this->mValidate.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
 this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
@@ -78,7 +78,9 @@ void RosSub::compute(const cedar::proc::Arguments&)
   loop_rate.sleep();
   ros::spinOnce();
 
-  //change the Gaussian function with the value of the ear sensor.
+  //change the Gaussian function with the value of the sensor.
+  mGaussMatrixCenters.clear();
+  mGaussMatrixCenters.push_back(cent);
   this->mOutput->setData(cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,dat,mGaussMatrixSigmas,mGaussMatrixCenters,true));
 
 
@@ -99,7 +101,9 @@ void RosSub::reName()
 void RosSub::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
 {
    //ROS_INFO("I heard: [%f]", msg->data);
-   dat = msg->data;
+   cent = msg->data;
+
+
 }
 
 void RosSub::reset()
