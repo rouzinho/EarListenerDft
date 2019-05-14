@@ -39,6 +39,7 @@
 #include <cedar/processing/ExternalData.h> // getInputSlot() returns ExternalData
 #include <cedar/auxiliaries/MatData.h> // this is the class MatData, used internally in this step
 #include "cedar/auxiliaries/math/functions.h"
+#include <iostream>
 
 // SYSTEM INCLUDES
 
@@ -49,8 +50,7 @@ RosSub::RosSub()
 :
 cedar::proc::Step(true),
 mOutput(new cedar::aux::MatData(cv::Mat::zeros(50, 50, CV_32F))),
-mTopic(new cedar::aux::StringParameter(this, "Topic Name", "")),
-mValidate(new cedar::aux::DoubleParameter(this,"Motor Pos",25))
+mTopic(new cedar::aux::StringParameter(this, "Topic Name", ""))
 {
 this->declareOutput("demo_output", mOutput);
 
@@ -61,8 +61,8 @@ mGaussMatrixCenters.push_back(10.0);
 //mGaussMatrixCenters.push_back(25.0);
 //init the variable that will get the sensor value
 cent = 2.5;
+amp = 2.0;
 
-this->connect(this->mValidate.get(), SIGNAL(valueChanged()), this, SLOT(reCompute()));
 this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
 
 
@@ -74,33 +74,29 @@ void RosSub::compute(const cedar::proc::Arguments&)
 {
 
   //subscriber for the ear. The rate of subscription is based on the one on Arduino e.g 10ms
-  ros::Rate loop_rate(98);
+  ros::Rate loop_rate(100);
   loop_rate.sleep();
   ros::spinOnce();
 
   //change the Gaussian function with the value of the sensor.
   mGaussMatrixCenters.clear();
   mGaussMatrixCenters.push_back(cent);
-  this->mOutput->setData(cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,dat,mGaussMatrixSigmas,mGaussMatrixCenters,true));
+  this->mOutput->setData(cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,amp,mGaussMatrixSigmas,mGaussMatrixCenters,true));
+  std::cout<<"---- test ----\n";
 
-
-}
-
-void RosSub::reCompute()
-{
-   const std::string tname = topicName;
-   sub = n.subscribe(tname, 1000, &RosSub::chatterCallback,this);
 }
 
 void RosSub::reName()
 {
    topicName = this->mTopic->getValue();
+   const std::string tname = topicName;
+   sub = n.subscribe(tname, 1000, &RosSub::chatterCallback,this);
 }
 
 //callback for the subscriber. This one get the value of the sensor.
 void RosSub::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
 {
-   //ROS_INFO("I heard: [%f]", msg->data);
+   ROS_INFO("I heard: [%f]", msg->data);
    cent = msg->data;
 
 
