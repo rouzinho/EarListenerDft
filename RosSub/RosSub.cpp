@@ -49,18 +49,18 @@
 RosSub::RosSub()
 :
 cedar::proc::Step(true),
-mOutput(new cedar::aux::MatData(cv::Mat::zeros(50, 50, CV_32F))),
+mOutput(new cedar::aux::MatData(cv::Mat::zeros(1, 50, CV_32F))),
 mTopic(new cedar::aux::StringParameter(this, "Topic Name", ""))
 {
 this->declareOutput("demo_output", mOutput);
 
 mGaussMatrixSizes.push_back(50);
 mGaussMatrixSigmas.push_back(3.0);
-mGaussMatrixCenters.push_back(10.0);
+mGaussMatrixCenters.push_back(24.0);
 
 //mGaussMatrixCenters.push_back(25.0);
 //init the variable that will get the sensor value
-cent = 2.5;
+//cent = 2.5;
 amp = 2.0;
 
 this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
@@ -73,16 +73,15 @@ this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
 void RosSub::compute(const cedar::proc::Arguments&)
 {
 
-  //subscriber for the ear. The rate of subscription is based on the one on Arduino e.g 10ms
-  ros::Rate loop_rate(100);
+  ros::Rate loop_rate(60);
   loop_rate.sleep();
   ros::spinOnce();
 
   //change the Gaussian function with the value of the sensor.
-  mGaussMatrixCenters.clear();
-  mGaussMatrixCenters.push_back(cent);
+  //mGaussMatrixCenters.clear();
+  //mGaussMatrixCenters.push_back(cent);
   this->mOutput->setData(cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,amp,mGaussMatrixSigmas,mGaussMatrixCenters,true));
-  std::cout<<"---- test ----\n";
+  //std::cout<<cent <<"\n";
 
 }
 
@@ -96,8 +95,8 @@ void RosSub::reName()
 //callback for the subscriber. This one get the value of the sensor.
 void RosSub::chatterCallback(const std_msgs::Float64::ConstPtr& msg)
 {
-   ROS_INFO("I heard: [%f]", msg->data);
-   cent = msg->data;
+   //ROS_INFO("I heard: [%f]", msg->data);
+   amp = msg->data;
 
 
 }
