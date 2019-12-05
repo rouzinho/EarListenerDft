@@ -73,15 +73,16 @@ this->connect(this->mTopic.get(), SIGNAL(valueChanged()), this, SLOT(reName()));
 void RosSub::compute(const cedar::proc::Arguments&)
 {
 
-  ros::Rate loop_rate(60);
-  loop_rate.sleep();
-  ros::spinOnce();
+  ros::Rate loop_rate(20);
+
 
   //change the Gaussian function with the value of the sensor.
   //mGaussMatrixCenters.clear();
   //mGaussMatrixCenters.push_back(cent);
   this->mOutput->setData(cedar::aux::math::gaussMatrix(1,mGaussMatrixSizes,amp,mGaussMatrixSigmas,mGaussMatrixCenters,true));
   //std::cout<<cent <<"\n";
+  ros::spinOnce();
+  loop_rate.sleep();
 
 }
 
