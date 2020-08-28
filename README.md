@@ -34,6 +34,14 @@ The code was tested on ROS Kinetic Kame and Melodic Morenia
 
 ROS and Cedar are a bit to powerful to run on the same computer (if you have a big DFT model and a complex robot), so I recommend using 2 different computer.
 
+**INSTALL YARP**
+
+This last version of the plugin requires yarp (cedar built with yarp support - you don't have to do$
+
+https://www.yarp.it/install.html
+
+If you don't need it, remove the find_package(YARP REQUIRED) in the cedarProject.cmake
+
 ### Installing
 
 First clone the repository :
@@ -56,7 +64,7 @@ Finally start the compilation :
 
 `make`
 
-You should see the plugin under the name libEarListener.so in the build/ repository
+You should see the plugin under the name libRosSub.so in the build/ repository
 
 ## Before Running the plugin
 
@@ -68,7 +76,7 @@ Execute cedar and load it into cedar
 
 *Tools -> Manage plugins*
 
-In the plugin Manager window, click on *add* and choose the plugin libEarListener.so. This one should appear in the window.
+In the plugin Manager window, click on *add* and choose the plugin libRosSub.so. This one should appear in the window.
 
 You can close the window. The plugin is loaded inside cedar and before loading it, make sure your ROS node is running.
 
